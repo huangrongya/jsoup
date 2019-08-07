@@ -14,7 +14,7 @@ public class JsoupDemo {
         String detailDomain = "https://www.ylqxzb.com/zbPublish/";
 
         try {
-            for (int i = 1; i <10; i++) {
+            for (int i = 1; i <2; i++) {
                 Document document = Jsoup.connect("https://www.ylqxzb.com/ZbPublish/Index_n"+i+".html").get();
                 Elements trs = document.getElementsByTag("tr");
                 for (Element tr : trs) {
@@ -28,9 +28,12 @@ public class JsoupDemo {
                     String link = a.attr("href");
                     System.out.println(title+" | "+detailDomain+link+" | "+time);
                     Document detail = Jsoup.connect(detailDomain+link).get();
-                    Element contentElement = detail.selectFirst("div.zhongbiaoneirong");
-                    String content = contentElement.html();
-                    System.out.println(content);
+                    Element span = detail.selectFirst("span#ctl00_ContentPlaceHolder1_InformationContent");
+                    Elements contentP = span.children();
+                    for (Element element : contentP) {
+                        String content = element.html();
+                        System.out.println(content);
+                    }
                 }
             }
         } catch (IOException e) {
